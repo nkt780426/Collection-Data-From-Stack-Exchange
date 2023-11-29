@@ -8,12 +8,10 @@ import scrapy
 
 class QuestionItem(scrapy.Item):
     title = scrapy.Field()
-    link = scrapy.Field()
+    content = scrapy.Field()
     category = scrapy.Field()
-    pass
-
-
-class AnswerItem(scrapy.Item):
-    question_title = scrapy.Field()
-    answer = scrapy.Field()
-    pass
+    num_answer = scrapy.Field()
+    solved = scrapy.Field()
+    votes = scrapy.Field()
+    views = scrapy.Field()
+    time = scrapy.Field()
