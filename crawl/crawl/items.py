@@ -10,8 +10,10 @@ class QuestionItem(scrapy.Item):
     title = scrapy.Field()
     link = scrapy.Field()
     category = scrapy.Field()
+    pass
 
 
 class AnswerItem(scrapy.Item):
     question_title = scrapy.Field()
     answer = scrapy.Field()
+    pass
