@@ -1,12 +1,14 @@
 import os
 import json
 import scrapy
-from urllib.parse import urlparse 
+from urllib.parse import urlparse
 from crawl.items import QuestionItem
 
-page = {"start": 1, "end": 310}
+page = {"start": 1, "end": 2}
 
-crawl_url = "https://bitcoin.stackexchange.com/questions?tab=newest&pagesize=50"
+
+crawl_url = "https://meta.stackexchange.com/questions?tab=newest&pagesize=50"
+
 
 class Spider(scrapy.Spider):
     name = os.path.splitext(os.path.basename(__file__))[0]

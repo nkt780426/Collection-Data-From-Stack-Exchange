@@ -8,5 +8,3 @@ scrapy genspider [name_spider]
 scrapy crawl [name_spider]
 scrapy crawl bitcoin
 scrapy crawl ethereum
-
-docker run -e COMMANDER_PASSWORD='CHANGE_THIS_PASSWORD'  -e PROVIDERS_AWSEC2_ACCESSKEYID='YOUR ACCESS KEY ID'  -e PROVIDERS_AWSEC2_SECRETACCESSKEY='YOUR SECRET ACCESS KEY'  -it -p 8888:8888 -p 8889:8889 fabienvauchelles/scrapoxy
