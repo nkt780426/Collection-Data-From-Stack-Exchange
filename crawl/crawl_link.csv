@@ -1,7 +1,7 @@
 link,num_page,status,name
-https://bitcoin.stackexchange.com/questions?tab=newest&pagesize=50,610,done,
-https://ethereum.stackexchange.com/questions?tab=newest&pagesize=50,1051,,
-https://quant.stackexchange.com/questions?tab=newest&pagesize=50,434, ,
+https://bitcoin.stackexchange.com/questions?tab=newest&pagesize=50,610,done,hung
+https://ethereum.stackexchange.com/questions?tab=newest&pagesize=50,1051,done,hung
+https://quant.stackexchange.com/questions?tab=newest&pagesize=50,434,,
 https://money.stackexchange.com/questions?tab=newest&pagesize=50,767,,
 https://tezos.stackexchange.com/questions?tab=newest&pagesize=50,44,,
 https://cardano.stackexchange.com/questions?tab=newest&pagesize=50,55,,
