@@ -3,7 +3,7 @@ import json
 import scrapy
 from crawl.items import QuestionItem
 
-page = {"start": 1, "end": 2}
+page = {"start": 1, "end": 20}
 
 
 class EthereumSpider(scrapy.Spider):
