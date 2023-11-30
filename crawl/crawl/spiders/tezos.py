@@ -1,17 +1,18 @@
 import os
 import json
 import scrapy
+from urllib.parse import urlparse 
 from crawl.items import QuestionItem
 
-page = {"start": 101, "end": 1000}
+page = {"start": 1, "end": 310}
 
-class EthereumSpider(scrapy.Spider):  
-    name = "ethereum"
-    allowed_domains = ["ethereum.stackexchange.com"]
+crawl_url = "https://bitcoin.stackexchange.com/questions?tab=newest&pagesize=50"
+
+class Spider(scrapy.Spider):
+    name = os.path.splitext(os.path.basename(__file__))[0]
+    allowed_domains = [urlparse(crawl_url).hostname]
     start_urls = [
-        "https://ethereum.stackexchange.com/questions?tab=newest&pagesize=50&page=%d"
-        % i
-        for i in range(page["start"], page["end"] + 1)
+        f"{crawl_url}&page={i}" for i in range(page["start"], page["end"] + 1)
     ]
 
     def parse(self, response):
