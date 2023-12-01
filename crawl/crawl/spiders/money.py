@@ -4,10 +4,10 @@ import scrapy
 from urllib.parse import urlparse
 from crawl.items import QuestionItem
 
-page = {"start": 1, "end": 44}
+page = {"start": 1, "end": 767} 
 
 
-crawl_url = "https://tezos.stackexchange.com/questions?tab=newest&pagesize=50"
+crawl_url = "https://money.stackexchange.com/questions?tab=newest&pagesize=50"
 
 
 class Spider(scrapy.Spider):
