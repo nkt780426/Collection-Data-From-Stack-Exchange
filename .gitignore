@@ -1,1 +1,6 @@
 *.json
+*.pyc
+spark/jars
+spark/checkpoint_folder
+spark/data
+.env

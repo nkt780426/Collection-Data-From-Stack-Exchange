@@ -1,13 +1,16 @@
 import os
 import json
+import time
 import scrapy
 from urllib.parse import urlparse
 from crawl.items import QuestionItem
+from pykafka import KafkaClient
 
 page = {"start": 5501, "end": 6500}
-
-
 crawl_url = "https://superuser.com/questions?tab=newest&pagesize=50"
+
+kafka_topic_name = "stack_exchange"
+kafka_bootstrap_servers = "localhost:39092"
 
 
 class Spider(scrapy.Spider):
@@ -16,6 +19,41 @@ class Spider(scrapy.Spider):
     start_urls = [
         f"{crawl_url}&page={i}" for i in range(page["start"], page["end"] + 1)
     ]
+
+    def __init__(self, *args, **kwargs):
+        super(Spider, self).__init__(*args, **kwargs)
+        self.kafka_client = KafkaClient(hosts=kafka_bootstrap_servers)
+        self.kafka_topic = self.kafka_client.topics[kafka_topic_name]
+        self.producer = self.kafka_topic.get_producer()
+
+    def closed(self, reason):
+        self.producer.stop()
+
+    def publish_to_kafka(self, item):
+        try:
+            self.producer.produce(json.dumps(item).encode("utf-8"))
+        except Exception as e:
+            print(f"Error publishing to Kafka: {e}")
+            self.reconnect_to_kafka()
+
+    def reconnect_to_kafka(self):
+        max_retries = 3
+        current_retry = 0
+
+        while current_retry < max_retries:
+            try:
+                print("Attempting to reconnect to Kafka...")
+                self.kafka_client = KafkaClient(hosts=kafka_bootstrap_servers)
+                self.kafka_topic = self.kafka_client.topics[kafka_topic_name]
+                self.producer = self.kafka_topic.get_producer()
+                print("Reconnected to Kafka successfully.")
+                return
+            except Exception as e:
+                print(f"Error reconnecting to Kafka: {e}")
+                current_retry += 1
+                time.sleep(2**current_retry)  # Exponential backoff
+
+        print("Max retries reached. Unable to reconnect to Kafka.")
 
     def parse(self, response):
         # Request tới từng question dựa vào href
@@ -48,7 +86,7 @@ class Spider(scrapy.Spider):
                 yield scrapy.Request(
                     response.urljoin(question_url),
                     callback=self.parse_data,
-                    cb_kwargs={"item": dict(item)},  # Convert QuestionItem to dict
+                    cb_kwargs={"item": dict(item)},
                 )
 
     def parse_data(self, response, item):
@@ -66,18 +104,6 @@ class Spider(scrapy.Spider):
             "#question > div.post-layout > div.postcell.post-layout--right > div.mt24.mb12 > div > div > ul > li > a ::text"
         ).extract()
 
-        # Lưu dữ liệu vào một tệp JSON
-        output_filename = self.get_output_filename()
-        with open(output_filename, "a") as json_file:
-            json.dump(item, json_file)
-            json_file.write(",\n")
+        self.publish_to_kafka(item)
 
         yield item
-
-    def get_output_filename(self):
-        spider_name = getattr(self, "name", "default")
-        spider_dir = "data"
-        os.makedirs(spider_dir, exist_ok=True)
-        return os.path.join(
-            spider_dir, f"{spider_name}-{page['start']}-{page['end']}.json"
-        )
