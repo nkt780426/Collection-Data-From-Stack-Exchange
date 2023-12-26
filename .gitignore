@@ -1,6 +1,7 @@
 *.json
 *.pyc
-spark/jars
-spark/checkpoint_folder
-spark/data
+spark_streaming/output
+spark/output
 .env
+*.zip
+*.crc
