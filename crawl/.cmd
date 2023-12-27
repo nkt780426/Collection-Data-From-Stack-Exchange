@@ -6,5 +6,4 @@ scrapy genspider [name_spider]
 
 # Chạy spider
 scrapy crawl [name_spider]
-scrapy crawl bitcoin
-scrapy crawl ethereum
+scrapy crawl kafka
