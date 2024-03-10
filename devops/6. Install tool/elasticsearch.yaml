@@ -1,0 +1,9 @@
+cloud:
+  aws:
+    access_key: "your-access-key-id"
+    secret_key: "your-secret-access-key"
+    s3:
+      endpoint: "s3.amazonaws.com"  # Điều chỉnh theo địa chỉ S3 của bạn
+      bucket: "your-s3-bucket-name"
+      region: "your-s3-region"
+      base_path: "your-s3-base-path"

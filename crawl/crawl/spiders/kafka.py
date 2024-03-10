@@ -9,8 +9,8 @@ from pykafka import KafkaClient
 page = {"start": 1, "end": 10000}
 crawl_url = "https://superuser.com/questions?tab=newest&pagesize=50"
 
-kafka_topic_name = "stack_exchange"
-kafka_bootstrap_servers = "localhost:39092"
+kafka_topic_name = "stack-exchange"
+kafka_bootstrap_servers = "apache-spark:9092"
 
 
 class Spider(scrapy.Spider):

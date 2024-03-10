@@ -7,13 +7,13 @@ import os
 import preprocess
 
 # Kafka settings
-kafka_topic_name = "stack_exchange"
-kafka_bootstrap_servers = "localhost:39092"
+kafka_topic_name = "stack-exchange"
+kafka_bootstrap_servers = "apache-spark:9092"
 
 # AWS S3 settings
 aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
 aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
-s3_bucket = "btl-bigdata"
+s3_bucket = "hoangvo"
 s3_folder_name = "test"  # Thư mục trong bucket
 s3_output_path = "s3a://{}/{}".format(s3_bucket, s3_folder_name)
 
@@ -65,23 +65,23 @@ df_json = (
 )
 
 # Write data to Amazon S3
-# query = (
-#     df_json.repartition(1)
-#     .writeStream.outputMode("append")
-#     .format("json")
-#     .option("checkpointLocation", "{}/checkpoint".format(s3_output_path))
-#     .option("path", "{}/data".format(s3_output_path))
-#     .start()
-# )
-
-# Write data to local JSON file
 query = (
-    df_json.writeStream.outputMode("append")
+    df_json.repartition(1)
+    .writeStream.outputMode("append")
     .format("json")
-    .option("checkpointLocation", "./output/checkpoint")
-    .option("path", "./output/data")
+    .option("checkpointLocation", "{}/checkpoint".format(s3_output_path))
+    .option("path", "{}/data".format(s3_output_path))
     .start()
 )
+
+# Write data to local JSON file
+# query = (
+#     df_json.writeStream.outputMode("append")
+#     .format("json")
+#     .option("checkpointLocation", "./output/checkpoint")
+#     .option("path", "./output/data")
+#     .start()
+# )
 
 # Wait for the query to finish
 query.awaitTermination()

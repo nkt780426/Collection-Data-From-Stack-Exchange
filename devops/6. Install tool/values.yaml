@@ -1,0 +1,14 @@
+elasticsearch:
+  extraEnvs:
+    - name: "AWS_ACCESS_KEY_ID"
+      value: "your-access-key-id"
+    - name: "AWS_SECRET_ACCESS_KEY"
+      value: "your-secret-access-key"
+  extraVolumeMounts:
+    - name: elasticsearch-config
+      mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+      subPath: elasticsearch.yml
+  extraVolumes:
+    - name: elasticsearch-config
+      configMap:
+        name: elasticsearch-config
